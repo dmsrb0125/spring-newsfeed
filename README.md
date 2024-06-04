@@ -15,5 +15,3 @@
 | 403 Forbidden    | ```json { "error": "Forbidden", "message": "You do not have permission to perform this action." } ``` |
 | 404 Not Found    | ```json { "error": "Not Found", "message": "The requested resource was not found." } ```      |
 | 400 Bad Request  | ```json { "error": "Bad Request", "message": "Invalid request parameters or payload." } ```   |
-
-이 표는 댓글 작성, 조회, 수정, 삭제 기능을 포함한 API 명세서입니다. 각 기능은 적절한 권한과 유효한 JWT 토큰이 필요합니다.
