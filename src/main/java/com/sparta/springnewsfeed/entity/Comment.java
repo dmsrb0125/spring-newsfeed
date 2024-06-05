@@ -1,23 +1,16 @@
 package com.sparta.springnewsfeed.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import java.time.LocalDateTime;
 
 @Entity
-@Data // // Lombok 어노테이션으로 getter, setter, toString, equals, hashCode를 자동 생성
-@NoArgsConstructor
-public class Comment {
-
+public record Comment(long username, String commentContent, long commentLike)
+{
     @Id
-    private Long commentId; // 댓글 ID
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private static Long commentId; // 댓글 ID
 
-    private long postId; // 게시글 ID
-    private long username; // 작성자 이름
-    private String commentContent; // 내용물
-    private long commentLike; // 좋아요 갯수
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id", nullable = false)
+    private static Post postId; // 게시글 ID
+
 }
