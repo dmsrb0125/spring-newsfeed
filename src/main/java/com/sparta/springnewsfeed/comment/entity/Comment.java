@@ -10,12 +10,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Comment {
-    private Long id;
     private Long commentId;
     private String username;
     private String commentContents;
 
     public Comment(CommentRequestDto requestDto) {
-
+        this.username = requestDto.getUsername();
+        this.commentContents = requestDto.getCommentContents();
     }
 }

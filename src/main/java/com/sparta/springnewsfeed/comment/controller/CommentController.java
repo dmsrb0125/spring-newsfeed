@@ -20,10 +20,10 @@ public class CommentController {
         Comment comment = new Comment(requestDto);
 
         Long maxId = !commentList.isEmpty() ? Collections.max(commentList.keySet()) + 1 : 1;
-        comment.setId(maxId);
+        comment.setCommentId(maxId);
 
         // DB 저장
-        commentList.put(maxId, comment);
+        commentList.put(comment.getCommentId(), comment);
 
         // Entity -> ResponseDto
         return new CommentResponseDto(comment);
