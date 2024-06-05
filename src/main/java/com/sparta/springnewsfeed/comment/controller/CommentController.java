@@ -28,4 +28,36 @@ public class CommentController {
         // Entity -> ResponseDto
         return new CommentResponseDto(comment);
     }
+
+    @GetMapping("/comments")
+    public List<CommentResponseDto> getAllComments() {
+        // Map -> List 변환
+        List<CommentResponseDto> responseList = commentList.values().stream()
+                .map(CommentResponseDto::new).toList();
+
+        return responseList;
+    }
+
+    @PutMapping("/comments/{id}")
+    public Long updateComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto) {
+        if (!commentList.containsKey(id)) {
+            throw new IllegalArgumentException("Comment with id " + id + " does not exist");
+        } else { // 댓글 가져오기
+            Comment comment = commentList.get(id);
+
+            // 댓글 수정
+            comment.update(requestDto);
+            return comment.getCommentId();
+        }
+    }
+
+    @DeleteMapping("/comments/{id}")
+    public Comment deleteComment(@PathVariable Long id) {
+        if (!commentList.containsKey(id)) {
+            throw new IllegalArgumentException("Comment with id " + id + " does not exist");
+        } else {
+            // 메모 삭제하기
+            return commentList.remove(id);
+        }
+    }
 }

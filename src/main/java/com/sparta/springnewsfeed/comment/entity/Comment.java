@@ -18,4 +18,8 @@ public class Comment {
         this.username = requestDto.getUsername();
         this.commentContents = requestDto.getCommentContents();
     }
+
+    public void update(CommentRequestDto requestDto) {
+        this.commentContents = requestDto.getCommentContents();
+    }
 }
