@@ -16,4 +16,10 @@ public class CommentResponseDto {
         this.username = comment.getUsername();
         this.commentContents = comment.getCommentContents();
     }
+
+    public CommentResponseDto(Long id, String username, String contents) {
+        this.commentId = id;
+        this.username = username;
+        this.commentContents = contents;
+    }
 }

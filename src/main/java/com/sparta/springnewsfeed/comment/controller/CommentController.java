@@ -1,63 +1,43 @@
 package com.sparta.springnewsfeed.comment.controller;
 
-
 import com.sparta.springnewsfeed.comment.dto.CommentRequestDto;
 import com.sparta.springnewsfeed.comment.dto.CommentResponseDto;
-import com.sparta.springnewsfeed.comment.entity.Comment;
+import com.sparta.springnewsfeed.comment.service.CommentService;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/post")
 public class CommentController {
 
-    private final Map<Long, Comment> commentList = new HashMap<>();
+    // Service 주입
+    private final CommentService commentService; // CommentController > CommentService > CommentRepository
 
+    public CommentController(CommentService commentService) { // DispatcherServlet이 내부적으로 가져다가 사용하고 있음.
+        this.commentService = commentService;
+    }
+
+    // 댓글 생성, 수정, 조회, 삭제 기능
     @PostMapping("/comments")
     public CommentResponseDto addComment(@RequestBody CommentRequestDto requestDto) {
-        // RequestDto -> Entity
-        Comment comment = new Comment(requestDto);
-
-        Long maxId = !commentList.isEmpty() ? Collections.max(commentList.keySet()) + 1 : 1;
-        comment.setCommentId(maxId);
-
-        // DB 저장
-        commentList.put(comment.getCommentId(), comment);
-
-        // Entity -> ResponseDto
-        return new CommentResponseDto(comment);
+        return commentService.addComment(requestDto);
     }
 
     @GetMapping("/comments")
-    public List<CommentResponseDto> getAllComments() {
-        // Map -> List 변환
-        List<CommentResponseDto> responseList = commentList.values().stream()
-                .map(CommentResponseDto::new).toList();
-
-        return responseList;
+    public List<CommentResponseDto> getComments() {
+        return commentService.getComments();
     }
 
     @PutMapping("/comments/{id}")
     public Long updateComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto) {
-        if (!commentList.containsKey(id)) {
-            throw new IllegalArgumentException("Comment with id " + id + " does not exist");
-        } else { // 댓글 가져오기
-            Comment comment = commentList.get(id);
-
-            // 댓글 수정
-            comment.update(requestDto);
-            return comment.getCommentId();
-        }
+        return commentService.updateComment(id, requestDto);
     }
 
     @DeleteMapping("/comments/{id}")
-    public Comment deleteComment(@PathVariable Long id) {
-        if (!commentList.containsKey(id)) {
-            throw new IllegalArgumentException("Comment with id " + id + " does not exist");
-        } else {
-            // 메모 삭제하기
-            return commentList.remove(id);
-        }
+    public Long deleteComment(@PathVariable Long id) {
+        return commentService.deleteComment(id);
+
     }
 }
