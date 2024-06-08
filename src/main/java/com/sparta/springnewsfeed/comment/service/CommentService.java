@@ -21,9 +21,8 @@ public class CommentService { // commentService
 
     public List<CommentResponseDto> getComments() {
         // DB 조회
-        return commentRepository.findAll().stream().map(CommentResponseDto::new).toList();
+        return commentRepository.findAllByOrderByModifiedAt().stream().map(CommentResponseDto::new).toList(); // Query Method 사용 가장 최근 댓글 최근
     }
-
 
     // DB 생성
     public CommentResponseDto addComment(CommentRequestDto requestDto) {
