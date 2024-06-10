@@ -46,7 +46,6 @@ public class CommentService { // commentService
         return id;
     }
 
-
     // 댓글 삭제
     public Long deleteComment(Long id) {
         Comment comment = findComment(id);
