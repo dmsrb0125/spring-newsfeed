@@ -26,21 +26,21 @@ public class CommentController {
 
     // 댓글 생성, 수정, 조회, 삭제 기능
     @ApiOperation(value = "댓글 작성", notes = "댓글을 작성합니다.")
-    @PostMapping("/comments")
+    @PostMapping("{post_id}/comments")
     @ResponseStatus(HttpStatus.CREATED)
     public CommentResponseDto addComment(@RequestBody CommentRequestDto requestDto) {
         return commentService.addComment(requestDto);
     }
 
     @ApiOperation(value = "댓글 조회", notes = "댓글을 조회합니다.")
-    @GetMapping("/comments")
+    @GetMapping("{post_id}/comments")
     @ResponseStatus(HttpStatus.OK)
     public List<CommentResponseDto> getComments() {
         return commentService.getComments();
     }
 
     @ApiOperation(value = "댓글 수정", notes = "댓글을 수정 합니다.")
-    @PutMapping("/comments/{id}")
+    @PutMapping("{post_id}/comments/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Long updateComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto) {
         return commentService.updateComment(id, requestDto);
@@ -52,6 +52,5 @@ public class CommentController {
     @ResponseStatus(HttpStatus.OK)
     public Long deleteComment(@PathVariable Long id) {
         return commentService.deleteComment(id);
-
     }
 }
