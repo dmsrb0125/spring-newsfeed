@@ -1,4 +1,4 @@
-package com.sparta.springnewsfeed.config;
+package com.sparta.springnewsfeed.comment.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
