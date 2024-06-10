@@ -19,6 +19,7 @@ public class CommentService { // commentService
     } // 객체의 불변성을 지킬 수 있기 때문에 생성자 방식으로 DI 사용
 
 
+    @Transactional(readOnly = true)
     public List<CommentResponseDto> getComments() {
         // DB 조회
         return commentRepository.findAllByOrderByModifiedAt().stream().map(CommentResponseDto::new).toList(); // Query Method 사용 가장 최근 댓글 최근

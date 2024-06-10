@@ -1,12 +1,15 @@
 package com.sparta.springnewsfeed.comment.dto;
 
 import com.sparta.springnewsfeed.comment.entity.Comment;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-
-@Getter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CommentResponseDto {
     private Long commentId; // 댓글 ID
     private String username;
@@ -21,5 +24,4 @@ public class CommentResponseDto {
         this.createdAt = comment.getCreatedAt();
         this.updatedAt = comment.getModifiedAt();
     }
-
 }
