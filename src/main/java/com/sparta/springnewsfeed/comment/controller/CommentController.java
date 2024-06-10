@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @Api(value = "Comment Controller", tags = "Comment")
 @RestController
 @RequestMapping("/post")
