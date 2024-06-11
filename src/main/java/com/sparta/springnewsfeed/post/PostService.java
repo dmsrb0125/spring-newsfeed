@@ -88,8 +88,6 @@ public class PostService {
         return new HttpStatusResponseDto(ResponseCode.SUCCESS, postResponses);
     }
 
-
-
     @Transactional
     public HttpStatusResponseDto updatePost(User user, Long postId, PostRequest request) {
         Optional<Post> optionalPost = postRepository.findById(postId);

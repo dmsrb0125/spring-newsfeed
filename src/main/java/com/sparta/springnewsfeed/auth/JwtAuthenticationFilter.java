@@ -1,7 +1,7 @@
 package com.sparta.springnewsfeed.auth;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sparta.springnewsfeed.common.HttpStatusResponseDto;
 import com.sparta.springnewsfeed.user.User;
 import com.sparta.springnewsfeed.user.UserRepository;
 import com.sparta.springnewsfeed.user.UserStatusEnum;
@@ -17,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -91,6 +92,20 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         response.setStatus(HttpServletResponse.SC_OK);
 
+        // 응답 바디에 추가할 메시지
+        Map<String, String> responseBody = new HashMap<>();
+        responseBody.put("msg", "로그인 성공");
+        responseBody.put("statuscode", "200");
+
+        // 응답 콘텐츠 타입 설정
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        // ObjectMapper를 사용하여 객체를 JSON 문자열로 변환
+        ObjectMapper objectMapper = new ObjectMapper();
+        String responseJson = objectMapper.writeValueAsString(responseBody);
+        response.getWriter().write(responseJson);
+
     }
 
     //사용자인증에 실패했을때
@@ -102,6 +117,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         Map<String, String> responseBody = new HashMap<>();
         responseBody.put("msg", "로그인 실패");
         responseBody.put("statuscode", "401");
+
+        // 응답 콘텐츠 타입 설정
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
 
         ObjectMapper objectMapper = new ObjectMapper();
         String responseJson = objectMapper.writeValueAsString(responseBody);
