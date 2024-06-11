@@ -122,25 +122,38 @@ public class UserController {
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {
+        try{
         // 헤더에서 토큰을 가져옴 ->
         String accessToken = jwtUtil.getAccessTokenFromHeader(request);
         String refreshToken = jwtUtil.getRefreshTokenFromHeader(request);
 
-        // 토큰이 유효한지 확인
-        if (StringUtils.hasText(refreshToken) && jwtUtil.validateToken(refreshToken)) {
-            Claims refreshTokenClaims = jwtUtil.getUserInfoFromToken(refreshToken);
-            String userId = refreshTokenClaims.getSubject();
+        // Access Token이 유효한지 확인
+        if (!StringUtils.hasText(accessToken) || !jwtUtil.validateToken(accessToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Access Token");
+        }
 
-            // 유저의 리프레시 토큰 삭제
-            User user = userRepository.findByUserId(userId).orElse(null);
-            if (user != null) {
-                user.setRefreshToken(null);
-                userRepository.save(user);
-            }
+        // Refresh Token이 유효한지 확인
+        if (!StringUtils.hasText(refreshToken) || !jwtUtil.validateToken(refreshToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Refresh Token");
+        }
+
+        Claims refreshTokenClaims = jwtUtil.getUserInfoFromToken(refreshToken);
+        String userId = refreshTokenClaims.getSubject();
+
+        // 유저의 리프레시 토큰 삭제
+        User user = userRepository.findByUserId(userId).orElse(null);
+        if (user != null) {
+            user.setRefreshToken(null);
+            userRepository.save(user);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
 
         // 클라이언트 측 토큰 삭제 요청을 위해 응답 설정
         return ResponseEntity.ok("Logged out successfully");
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Logout failed");
+    }
     }
 
 
